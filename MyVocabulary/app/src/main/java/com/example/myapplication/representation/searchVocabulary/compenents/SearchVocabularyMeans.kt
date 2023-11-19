@@ -10,22 +10,23 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.representation.searchVocabulary.SearchVocalaryState
 
 @Composable
-fun SearchVocabulary(){
+fun SearchVocabulary(searchState:SearchVocalaryState){
     Column {
 
         TextField(
-            value = view.vocabulary.value,
+            value = searchState.searchVocabulary,
             placeholder={ Text(text = "Search Vocabulary Which You don't means") },
             modifier = Modifier.padding(20.dp),
-            onValueChange ={newText->view.vocabulary.value=newText} )
+            onValueChange ={newText->searchState.searchVocabulary=newText} )
 
-        Button(onClick = { view.getWords(view.vocabulary.value) }, modifier = Modifier.padding(20.dp)) {
+        Button(onClick = { view.getWords(searchState.searchVocabulary) }, modifier = Modifier.padding(20.dp)) {
             Text(text = "Search Means")
         }
 
-        Text(text = view.means.value, modifier = Modifier.verticalScroll(rememberScrollState()))
+        Text(text = searchState.searchVocabularyMeans, modifier = Modifier.verticalScroll(rememberScrollState()))
 
 
     }
