@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.representation.newVocabulary
 
 import android.database.SQLException
 import androidx.compose.runtime.getValue
@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.local.VocabularyDao
 import com.example.myapplication.data.local.VocabularyEntity
 import com.example.myapplication.domain.model.Vocabulary
-import com.example.myapplication.representation.newVocabulary.VocabularyAddState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -38,10 +37,10 @@ class VocabularyView @Inject constructor(private  val vocabularyDao: VocabularyD
 
 
 
-    fun  onEvent(event:VocabularyEvent){
+    fun  onEvent(event: VocabularyEvent){
 
         when(event){
-         is  VocabularyEvent.vocabulary->
+         is VocabularyEvent.vocabulary ->
          {
 
                _vocabularyState=_vocabularyState.copy(
@@ -51,7 +50,7 @@ class VocabularyView @Inject constructor(private  val vocabularyDao: VocabularyD
 
 
          }
-            is VocabularyEvent.vocabularySearch->{
+            is VocabularyEvent.vocabularySearch ->{
                 _vocabularyState=_vocabularyState.copy(
                     findVocabulary= event.searchText
                 )
@@ -66,19 +65,19 @@ class VocabularyView @Inject constructor(private  val vocabularyDao: VocabularyD
                 }
             }
 
-            is  VocabularyEvent.vocabularyMeans->
+            is VocabularyEvent.vocabularyMeans ->
             {
                 _vocabularyState=_vocabularyState.copy(
                     vocabularyMeans = event.vocabularyMeans,
                 )
             }
-            is VocabularyEvent.vocabularySentences->
+            is VocabularyEvent.vocabularySentences ->
             {
                 _vocabularyState=_vocabularyState.copy(
                     vocabularySentences = event.vocabularySentences
                 )
             }
-            is VocabularyEvent.vocabularyEdit->{
+            is VocabularyEvent.vocabularyEdit ->{
                 viewModelScope.launch {
                      val entity   =vocabularyDao.getVocabulary(event.id)
                     try {
@@ -98,14 +97,14 @@ class VocabularyView @Inject constructor(private  val vocabularyDao: VocabularyD
 
                 }
             }
-            is VocabularyEvent.vocabularyLearn->{
+            is VocabularyEvent.vocabularyLearn ->{
                  _vocabularyState=_vocabularyState.copy(
                      idValue = event.id,
                      dialogLearn = true
                  )
 
             }
-            VocabularyEvent.vocabularySubmit->
+            VocabularyEvent.vocabularySubmit ->
             {
                 if(_vocabularyState.id!=0){
 
@@ -118,25 +117,25 @@ class VocabularyView @Inject constructor(private  val vocabularyDao: VocabularyD
                 clearValues()
 
             }
-            VocabularyEvent.ShowDialog->
+            VocabularyEvent.ShowDialog ->
             {
                _vocabularyState=_vocabularyState.copy(
                    dialogShowHide = true
                )
             }
-            VocabularyEvent.HideDialog->
+            VocabularyEvent.HideDialog ->
             {
                 _vocabularyState=_vocabularyState.copy(
                     dialogShowHide = false
                 )
             }
 
-            VocabularyEvent.LearnDialogHide->{
+            VocabularyEvent.LearnDialogHide ->{
                 _vocabularyState=_vocabularyState.copy(
                     dialogLearn = false
                 )
             }
-            VocabularyEvent.changeVocabularyPage->{
+            VocabularyEvent.changeVocabularyPage ->{
                 viewModelScope.launch {
                     vocabularyDao.LearnVocabulary(_vocabularyState.idValue)
                 }

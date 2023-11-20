@@ -10,10 +10,12 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.representation.searchVocabulary.SearchEvent
 import com.example.myapplication.representation.searchVocabulary.SearchVocalaryState
 
 @Composable
-fun SearchVocabulary(searchState:SearchVocalaryState){
+fun SearchVocabulary(searchState:SearchVocalaryState,
+                     onEvent:(SearchEvent)->Unit){
     Column {
 
         TextField(
@@ -22,7 +24,7 @@ fun SearchVocabulary(searchState:SearchVocalaryState){
             modifier = Modifier.padding(20.dp),
             onValueChange ={newText->searchState.searchVocabulary=newText} )
 
-        Button(onClick = { view.getWords(searchState.searchVocabulary) }, modifier = Modifier.padding(20.dp)) {
+        Button(onClick = { onEvent(SearchEvent.getWords(searchState.searchVocabulary)) }, modifier = Modifier.padding(20.dp)) {
             Text(text = "Search Means")
         }
 

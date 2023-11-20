@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.di
 
 import android.app.Application
 import android.content.Context
@@ -8,7 +8,7 @@ import dagger.hilt.android.HiltAndroidApp
 class ApplicationContent:Application () {
 
     init {
-         app=this
+         app =this
     }
 
     companion object{

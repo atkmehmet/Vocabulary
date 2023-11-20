@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.representation.newVocabulary.VocabularyAddState
-import com.example.myapplication.VocabularyEvent
+import com.example.myapplication.representation.newVocabulary.VocabularyEvent
 
 @Composable
 fun addVocabulary(state: VocabularyAddState,

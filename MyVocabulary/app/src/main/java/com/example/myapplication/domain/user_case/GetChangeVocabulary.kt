@@ -8,9 +8,17 @@ import javax.inject.Inject
 class GetChangeVocabulary @Inject constructor(
     private val repository: repositoryImplemtation
 ) {
+
     operator fun invoke(id:Int){
-        GlobalScope.launch {
-            repository.LearnVocabulary(id = id)
-        }
+          try {
+              GlobalScope.launch {
+                  repository.LearnVocabulary(id = id)
+              }
+          }
+          catch (ex:Exception){
+
+
+          }
+
     }
 }

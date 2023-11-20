@@ -1,7 +1,8 @@
-package com.example.myapplication
+package com.example.myapplication.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.myapplication.comon.Constant
 import com.example.myapplication.data.local.VocabularyDao
 import com.example.myapplication.data.local.VocabularyDb
 import com.example.myapplication.data.remote.wordApi
@@ -40,7 +41,7 @@ object VocabularyModul {
     fun wordRet(): wordApi {
          return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://api.dictionaryapi.dev/")
+            .baseUrl(Constant.BASE_URL)
             .build()
             .create(wordApi::class.java)
     }

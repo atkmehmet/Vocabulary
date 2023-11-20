@@ -1,9 +1,10 @@
-package com.example.myapplication
+package com.example.myapplication.representation.learn
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.setValue
+import com.example.myapplication.representation.newVocabulary.VocabularyState
 import com.example.myapplication.data.local.VocabularyDao
 import com.example.myapplication.domain.model.Vocabulary
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,7 @@ class learnView @Inject constructor(private val vocabularyDao: VocabularyDao) :V
 
      var _learnVocabulary = MutableStateFlow(VocabularyState())
     var _state by mutableStateOf(LearnState())
-    val state :LearnState
+    val state : LearnState
       get() = _state
 
     //private val vocabularyDao=VocabularyDb.getDaoInstance(ApplicationContent.getAppContext())

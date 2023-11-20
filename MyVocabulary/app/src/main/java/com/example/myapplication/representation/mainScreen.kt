@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.representation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -29,7 +29,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.domain.model.Vocabulary
+import com.example.myapplication.representation.learn.learnEvent
+import com.example.myapplication.representation.learn.learnView
 import com.example.myapplication.representation.newVocabulary.VocabularyAddState
+import com.example.myapplication.representation.newVocabulary.VocabularyEvent
+import com.example.myapplication.representation.newVocabulary.VocabularyView
+import com.example.myapplication.representation.searchVocabulary.SearchView
 
 
 @Composable
@@ -55,7 +60,8 @@ fun mainScreen(){
                ),
            ),
                navController =navController ,
-               onItemClick = {navController.navigate(it.route)})})
+               onItemClick = {navController.navigate(it.route)})
+           })
     {
         Navigation(navController = navController)
     }
@@ -118,9 +124,9 @@ fun learnDialog(onEvent: (VocabularyEvent) -> Unit){
 
 @Composable
 fun Navigation(navController: NavHostController){
-    val view:VocabularyView = hiltViewModel() //viewModel()
-    val viewLearn:learnView = hiltViewModel() //viewModel()
-    val viewSearch:SearchView= viewModel()
+    val view: VocabularyView = hiltViewModel() //viewModel()
+    val viewLearn: learnView = hiltViewModel() //viewModel()
+    val viewSearch: SearchView = viewModel()
     NavHost(navController = navController, startDestination ="home"  ){
         composable("home") {
             HomeScreen(view)
@@ -135,7 +141,7 @@ fun Navigation(navController: NavHostController){
 
 }
 @Composable
-fun Search(view:SearchView){
+fun Search(view: SearchView){
     Column {
 
             TextField(
@@ -194,7 +200,7 @@ fun BottomNavigationBar(
 //mainScreen(viewModel.vocabularyState,viewModel.allVocabulary,onEvent=viewModel::onEvent)
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun HomeScreen(view: VocabularyView ){
+fun HomeScreen(view: VocabularyView){
 
     HomePage(view.vocabularyState,view.allVocabulary.value.allVocabulary.collectAsState(initial = emptyList()).value,view::onEvent)
 
