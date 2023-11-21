@@ -9,13 +9,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.local.VocabularyDao
 import com.example.myapplication.data.local.VocabularyEntity
 import com.example.myapplication.domain.model.Vocabulary
+import com.example.myapplication.domain.user_case.GetVocabulary
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class VocabularyView @Inject constructor(private  val vocabularyDao: VocabularyDao)  :ViewModel(){
+class VocabularyView @Inject constructor(getVocabulary: GetVocabulary)  :ViewModel(){
 
 
     private  var _vocabularyState by mutableStateOf(VocabularyAddState())
@@ -26,8 +27,6 @@ class VocabularyView @Inject constructor(private  val vocabularyDao: VocabularyD
   private var _allVocabulary = MutableStateFlow(VocabularyState())
    val allVocabulary=_allVocabulary.asStateFlow()
 
-
-    //private  val vocabularyDao=VocabularyDb.getDaoInstance(ApplicationContent.getAppContext())
 
     init {
         getVocabulary()
@@ -42,12 +41,9 @@ class VocabularyView @Inject constructor(private  val vocabularyDao: VocabularyD
         when(event){
          is VocabularyEvent.vocabulary ->
          {
-
                _vocabularyState=_vocabularyState.copy(
                    vocabulary = event.vocabulary
                )
-
-
 
          }
             is VocabularyEvent.vocabularySearch ->{

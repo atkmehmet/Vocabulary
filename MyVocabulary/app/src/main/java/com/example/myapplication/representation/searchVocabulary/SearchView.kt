@@ -6,27 +6,40 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.remote.wordApi
 import com.example.myapplication.data.remote.dto.wordValue
+import com.example.myapplication.domain.user_case.GetVocabulary
+import com.example.myapplication.domain.user_case.GetVocabularyMeans
+import com.example.myapplication.domain.user_case.getVocabularyCount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchView @Inject constructor(private val wordApi: wordApi) :ViewModel() {
+class SearchView @Inject constructor(private val get: GetVocabulary) :ViewModel() {
 
     val state= mutableStateOf(SearchVocalaryState())
-  //  var means= mutableStateOf("")
-    //var vocabulary= mutableStateOf("")
 
 
+
+
+   init {
+       getWords("")
+   }
     @SuppressLint("SuspiciousIndentation")
     fun getWords(userVocabulary:String){
+
+
         try {
+
+            val getMeans:List<wordValue>
+
+             get
 
             state.value.searchVocabulary="Searching..."
             state.value.searchVocabularyMeans=""
             var countMeans:Int=1
           //  val api= wordApi.getInstance()
             viewModelScope.launch {
+
                 val returnValue = wordApi.getwordMeans(userVocabulary)
                 state.value.searchVocabularyMeans=""
                 for (value in returnValue.indices){
