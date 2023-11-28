@@ -11,14 +11,17 @@ import javax.inject.Inject
 
 class GetVocabulary @Inject constructor(
    private val repository: repositoryImplemtation) {
-   operator fun invoke(): Flow<Resource<List<Vocabulary>>> = flow{
+   operator fun invoke(): Flow<Resource<Flow<List<Vocabulary>>>> = flow{
           val vocabulary=repository.getAllVocabulary().map {
-           Vocabulary(
-              id=it.id,
-              vocabulary = it.vocabulary,
-              vocabularyMeans = it.vocabularyMeans,
-              vocabularySentences = it.vocabularySentences
-           )
+              it.map {
+                  Vocabulary(
+                      id=it.id,
+                      vocabulary = it.vocabulary,
+                      vocabularyMeans = it.vocabularyMeans,
+                      vocabularySentences = it.vocabularySentences
+                  )
+              }
+
           }
    emit(Resource.Success(vocabulary))
    }

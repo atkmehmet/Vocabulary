@@ -6,17 +6,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.comon.Resource
 import com.example.myapplication.data.local.VocabularyDao
 import com.example.myapplication.data.local.VocabularyEntity
 import com.example.myapplication.domain.model.Vocabulary
+import com.example.myapplication.domain.user_case.GetChangeVocabulary
 import com.example.myapplication.domain.user_case.GetVocabulary
+import com.example.myapplication.domain.user_case.GetVocabularywithId
+import com.example.myapplication.domain.user_case.UpdateVocabulary
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class VocabularyView @Inject constructor(getVocabulary: GetVocabulary)  :ViewModel(){
+class VocabularyView @Inject constructor(
+    private val getAllVocabulary: GetVocabulary,
+    private val updateVocabulary: UpdateVocabulary,
+    private val getVocabularywithId: GetVocabularywithId,
+    private val getChangeVocabulary: GetChangeVocabulary
+)  :ViewModel(){
 
 
     private  var _vocabularyState by mutableStateOf(VocabularyAddState())
@@ -191,16 +200,32 @@ class VocabularyView @Inject constructor(getVocabulary: GetVocabulary)  :ViewMod
     }
     fun getVocabulary():Flow<List<Vocabulary>>{
 
+        var getAll:Flow<List<Vocabulary>> = emptyFlow()
+
+        getAllVocabulary().onEach {
+                result->
+            when(result){
+                is Resource.Success ->{
+                    getAll = result.data?: emptyFlow()
+                }
+            }
+        }
+
+
+
+
         viewModelScope.launch {
 
 
             _allVocabulary.update {
                 it.copy(
-                    allVocabulary=vocabularyDao.getAllVocabulary().map {
-                        it.map {
-                            Vocabulary(id = it.id, vocabulary = it.vocabulary, vocabularyMeans = it.vocabularyMeans, vocabularySentences = it.vocabularySentences)
-                        }
-                    }
+                 //   allVocabulary=vocabularyDao.getAllVocabulary().map {
+                   //     it.map {
+                    //        Vocabulary(id = it.id, vocabulary = it.vocabulary, vocabularyMeans = it.vocabularyMeans, vocabularySentences = it.vocabularySentences)
+                    //    }
+                   // }
+
+                    allVocabulary = getAll
 
 
                 )

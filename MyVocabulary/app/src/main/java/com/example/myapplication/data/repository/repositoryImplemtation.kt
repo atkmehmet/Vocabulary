@@ -22,7 +22,7 @@ class repositoryImplemtation @Inject constructor(
         dao.insertVocabulary(vocabulary = vocabulary)
     }
 
-    override suspend fun getAllVocabulary(): List<VocabularyEntity> {
+    override suspend fun getAllVocabulary():Flow<List<VocabularyEntity>> {
         return  dao.getAllVocabulary()
     }
 

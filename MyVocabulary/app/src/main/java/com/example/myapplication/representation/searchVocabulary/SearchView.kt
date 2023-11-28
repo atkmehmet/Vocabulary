@@ -14,16 +14,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchView @Inject constructor(private val get: GetVocabulary) :ViewModel() {
+class SearchView @Inject constructor(private val getMeans: GetVocabularyMeans) :ViewModel() {
 
     val state= mutableStateOf(SearchVocalaryState())
 
 
 
 
-   init {
-       getWords("")
-   }
     @SuppressLint("SuspiciousIndentation")
     fun getWords(userVocabulary:String){
 
@@ -31,16 +28,14 @@ class SearchView @Inject constructor(private val get: GetVocabulary) :ViewModel(
         try {
 
             val getMeans:List<wordValue>
-
-             get
-
             state.value.searchVocabulary="Searching..."
             state.value.searchVocabularyMeans=""
             var countMeans:Int=1
           //  val api= wordApi.getInstance()
             viewModelScope.launch {
 
-                val returnValue = wordApi.getwordMeans(userVocabulary)
+              //  val returnValue = wordApi.getwordMeans(userVocabulary)
+               val returnValue= getMeans(userVocabulary).data?: emptyList()
                 state.value.searchVocabularyMeans=""
                 for (value in returnValue.indices){
                       val word=returnValue[value]
