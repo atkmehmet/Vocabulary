@@ -145,16 +145,16 @@ fun Search(view: SearchView){
     Column {
 
             TextField(
-                value = view.vocabulary.value,
+                value = view.state.value.searchVocabulary,
                 placeholder={ Text(text = "Search Vocabulary Which You don't means")},
                 modifier = Modifier.padding(20.dp),
-                onValueChange ={newText->view.vocabulary.value=newText} )
+                onValueChange ={newText->view.state.value.searchVocabulary=newText} )
 
-               Button(onClick = { view.getWords(view.vocabulary.value) }, modifier = Modifier.padding(20.dp)) {
+               Button(onClick = { view.getWords(view.state.value.searchVocabulary) }, modifier = Modifier.padding(20.dp)) {
                    Text(text = "Search Means")
                }
 
-        Text(text = view.means.value, modifier = Modifier.verticalScroll(rememberScrollState()))
+        Text(text = view.state.value.searchVocabularyMeans, modifier = Modifier.verticalScroll(rememberScrollState()))
 
 
     }

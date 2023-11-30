@@ -30,7 +30,7 @@ fun LearnScreen(view:learnView){
                 onValueChange ={view.onEvent(learnEvent.findVocabulary(it))},
                 modifier = Modifier.padding(20.dp) )
         }
-        val vocabularyAll=view._learnVocabulary.value.allLearnVocabulary.collectAsState(initial = emptyList()).value
+        val vocabularyAll=view.state.LearnVocabularyList.collectAsState(initial = emptyList()).value
         LazyColumn( )
         {
             items(vocabularyAll){

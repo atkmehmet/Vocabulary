@@ -1,5 +1,6 @@
 package com.example.myapplication.representation.learn
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import com.example.myapplication.domain.user_case.GetLearnVocabulary
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -22,13 +24,13 @@ import javax.inject.Inject
 @HiltViewModel
 class learnView @Inject constructor(private val getLearnVocabulary: GetLearnVocabulary) :ViewModel() {
 
-    var _learnVocabulary = MutableStateFlow(VocabularyState())
-    var _state by mutableStateOf(LearnState())
+
+   private var _state by mutableStateOf(LearnState())
     val state: LearnState
         get() = _state
 
     //private val vocabularyDao=VocabularyDb.getDaoInstance(ApplicationContent.getAppContext())
-    private val learnVocabulary = _learnVocabulary.asStateFlow()
+  //  private val learnVocabulary = _learnVocabulary.asStateFlow()
 
     init {
         lateinit var getList: List<Vocabulary>
@@ -38,18 +40,14 @@ class learnView @Inject constructor(private val getLearnVocabulary: GetLearnVoca
                     getList = result.data ?: emptyList()
                 }
             }
-            _learnVocabulary.update {
-                it.copy(
-                    allLearnVocabulary = flow {
-                        emit(getList)
-                    }
-
-                )
+                _state.LearnVocabularyList= flow {
+                    emit(getList)
+                }
 
 
             }
         }
-    }
+
 
     fun onEvent(event: learnEvent) {
         when (event) {
@@ -57,16 +55,11 @@ class learnView @Inject constructor(private val getLearnVocabulary: GetLearnVoca
                 _state = _state.copy(
                     search = event.searchText
                 )
-                _learnVocabulary.update {
-                    it.copy(
-                        allLearnVocabulary = _learnVocabulary.value.allLearnVocabulary.map {
-                            it.filter {
-                                it.vocabulary.contains(_state.search, ignoreCase = false)
-                            }
-                        }
-                    )
+                _state.LearnVocabularyList.map {
+                    it.filter {
+                        it.vocabulary.contains(_state.search)
+                    }
                 }
-
 
             }
 
