@@ -10,6 +10,7 @@ import com.example.myapplication.comon.Resource
 import com.example.myapplication.data.local.VocabularyDao
 import com.example.myapplication.data.local.VocabularyEntity
 import com.example.myapplication.domain.model.Vocabulary
+import com.example.myapplication.domain.user_case.AddVocabulary
 import com.example.myapplication.domain.user_case.GetChangeVocabulary
 import com.example.myapplication.domain.user_case.GetVocabulary
 import com.example.myapplication.domain.user_case.GetVocabularywithId
@@ -24,7 +25,8 @@ class VocabularyView @Inject constructor(
     private val getAllVocabulary: GetVocabulary,
     private val updateVocabulary: UpdateVocabulary,
     private val getVocabularywithId: GetVocabularywithId,
-    private val getChangeVocabulary: GetChangeVocabulary
+    private val getChangeVocabulary: GetChangeVocabulary,
+    private val addVocabulary: AddVocabulary
 )  :ViewModel(){
 
 
@@ -83,14 +85,15 @@ class VocabularyView @Inject constructor(
                 )
             }
             is VocabularyEvent.vocabularyEdit ->{
+              val value  = getVocabularywithId(event.id).data?: Vocabulary()
                 viewModelScope.launch {
-                     val entity   =vocabularyDao.getVocabulary(event.id)
+                    // val entity   =vocabularyDao.getVocabulary(event.id)
                     try {
                         _vocabularyState=_vocabularyState.copy(
-                            vocabulary = entity.vocabulary,
-                            vocabularyMeans = entity.vocabularyMeans,
-                            vocabularySentences = entity.vocabularySentences,
-                            id = entity.id,
+                            vocabulary = value.vocabulary,
+                            vocabularyMeans = value.vocabularyMeans,
+                            vocabularySentences = value.vocabularySentences,
+                            id = value.id,
                             dialogShowHide = true
                         )
                     }
@@ -142,7 +145,8 @@ class VocabularyView @Inject constructor(
             }
             VocabularyEvent.changeVocabularyPage ->{
                 viewModelScope.launch {
-                    vocabularyDao.LearnVocabulary(_vocabularyState.idValue)
+                   // vocabularyDao.LearnVocabulary(_vocabularyState.idValue)
+                    getChangeVocabulary(_vocabularyState.idValue)
                 }
                 getVocabulary()
             }
@@ -160,10 +164,10 @@ class VocabularyView @Inject constructor(
         )
         viewModelScope.launch {
             try {
-                vocabularyDao.insertVocabulary(insertVocabulary)
-                _vocabularyState=_vocabularyState.copy(
-                    vocabularyCount = vocabularyDao.getCountVocabulary()
-                )
+
+                //vocabularyDao.insertVocabulary(insertVocabulary)
+                 addVocabulary(insertVocabulary)
+
                }
             catch (e: SQLException)
             {
@@ -179,7 +183,8 @@ class VocabularyView @Inject constructor(
 
         viewModelScope.launch {
             try {
-                vocabularyDao.EditVocabulary(_vocabularyState.vocabulary,_vocabularyState.vocabularyMeans,_vocabularyState.vocabularySentences,_vocabularyState.id)
+                updateVocabulary(_vocabularyState.vocabulary,_vocabularyState.vocabularyMeans,_vocabularyState.vocabularySentences,_vocabularyState.id)
+               // vocabularyDao.EditVocabulary(_vocabularyState.vocabulary,_vocabularyState.vocabularyMeans,_vocabularyState.vocabularySentences,_vocabularyState.id)
             }
             catch (e: SQLException)
             {

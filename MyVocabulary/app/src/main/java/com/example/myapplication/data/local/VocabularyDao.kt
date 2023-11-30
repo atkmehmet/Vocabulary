@@ -12,7 +12,7 @@ interface VocabularyDao {
     suspend fun insertVocabulary(vocabulary: VocabularyEntity)
 
     @Query("SELECT * FROM Vocabulary where vocabularyLearn=0 order by id desc")
-     fun getAllVocabulary():List<VocabularyEntity>
+     fun getAllVocabulary():Flow<List<VocabularyEntity>>
 
 
     @Query("SELECT * FROM Vocabulary where id=:id")

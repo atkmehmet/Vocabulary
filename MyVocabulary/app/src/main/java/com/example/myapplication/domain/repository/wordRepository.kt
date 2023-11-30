@@ -14,7 +14,7 @@ interface wordRepository {
     suspend fun insertVocabulary(vocabulary: VocabularyEntity)
 
 
-    suspend fun getAllVocabulary(): List<VocabularyEntity>
+    suspend fun getAllVocabulary(): Flow<List<VocabularyEntity>>
 
 
     suspend fun getVocabulary(id:Int): VocabularyEntity
