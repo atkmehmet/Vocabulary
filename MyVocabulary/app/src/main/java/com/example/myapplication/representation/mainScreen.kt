@@ -35,6 +35,7 @@ import com.example.myapplication.representation.newVocabulary.VocabularyAddState
 import com.example.myapplication.representation.newVocabulary.VocabularyEvent
 import com.example.myapplication.representation.newVocabulary.VocabularyView
 import com.example.myapplication.representation.searchVocabulary.SearchView
+import com.example.myapplication.representation.searchVocabulary.compenents.SearchVocabulary
 
 
 @Composable
@@ -142,22 +143,7 @@ fun Navigation(navController: NavHostController){
 }
 @Composable
 fun Search(view: SearchView){
-    Column {
-
-            TextField(
-                value = view.state.value.searchVocabulary,
-                placeholder={ Text(text = "Search Vocabulary Which You don't means")},
-                modifier = Modifier.padding(20.dp),
-                onValueChange ={newText->view.state.value.searchVocabulary=newText} )
-
-               Button(onClick = { view.getWords(view.state.value.searchVocabulary) }, modifier = Modifier.padding(20.dp)) {
-                   Text(text = "Search Means")
-               }
-
-        Text(text = view.state.value.searchVocabularyMeans, modifier = Modifier.verticalScroll(rememberScrollState()))
-
-
-    }
+    SearchVocabulary(view = view)
 }
 
 
@@ -287,41 +273,5 @@ fun HomePage(
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun LearnScreen(view: learnView){
-    Column(){
-             Row() {
-                 TextField(
-                     value = view.state.search,
-                     placeholder = { Text(text ="Search Vocabulary")},
-                     onValueChange ={view.onEvent(learnEvent.findVocabulary(it))},
-                     modifier = Modifier.padding(20.dp) )
-             }
-             val vocabularyAll=view._learnVocabulary.value.allLearnVocabulary.collectAsState(initial = emptyList()).value
-             LazyColumn( )
-             {
-                 items(vocabularyAll){
-                         vocabulary->
-                     Row() {
-                         Card(border = BorderStroke(2.dp,Color.Black),
-                             modifier = Modifier.padding(20.dp)) {
-
-                             Column() {
-                                 Row() {
-                                     Text(text = vocabulary.vocabulary,
-                                         fontSize = 24.sp, fontWeight = FontWeight.Bold,
-                                         modifier = Modifier
-                                             .weight(1f)
-                                             .padding(5.dp))
-                                 }
-                                 Text(text = vocabulary.vocabularyMeans,fontSize = 24.sp,
-                                     textAlign = TextAlign.Left, modifier = Modifier.padding(5.dp))
-                                 Text(text = vocabulary.vocabularySentences,fontSize = 24.sp,
-                                     textAlign = TextAlign.Left, modifier = Modifier.padding(5.dp))
-                             }
-                         }
-                     }
-
-                 }
-             }
-         }
-
+    LearnScreen(view = view)
 }
